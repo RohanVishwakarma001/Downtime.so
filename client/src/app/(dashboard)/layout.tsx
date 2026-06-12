@@ -15,6 +15,7 @@ import {
   Settings,
   LogOut,
   ExternalLink,
+  BookOpen,
 } from 'lucide-react';
 
 const NAV_LINKS = [
@@ -98,6 +99,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             );
           })}
         </nav>
+
+        {/* Docs link */}
+        <div className="px-2 pb-2">
+          <Link
+            href="/docs"
+            target="_blank"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-muted hover:text-foreground hover:bg-surface-2 transition-colors"
+          >
+            <BookOpen className="w-4 h-4 flex-shrink-0" />
+            Documentation
+          </Link>
+        </div>
 
         {/* User + logout */}
         <div className="px-4 py-4 border-t border-border">

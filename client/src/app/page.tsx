@@ -23,6 +23,9 @@ export default function LandingPage() {
             <Link href="#pricing" className="hover:text-foreground transition-colors">
               Pricing
             </Link>
+            <Link href="/docs" className="hover:text-foreground transition-colors">
+              Docs
+            </Link>
           </div>
           <div className="flex items-center gap-3">
             <Link
@@ -204,6 +207,11 @@ curl -X POST https://api.downtime.so/api/v1/incidents/inc_abc/updates \\
 
       {/* Footer */}
       <footer className="border-t border-border/50 py-8 text-center text-sm text-muted">
+        <div className="flex items-center justify-center gap-6 mb-3">
+          <Link href="/docs" className="hover:text-foreground transition-colors">Documentation</Link>
+          <Link href="/status/demo" className="hover:text-foreground transition-colors">Demo</Link>
+          <Link href="/register" className="hover:text-foreground transition-colors">Get Started</Link>
+        </div>
         <p>© 2025 Downtime.so — Built for developers, by developers.</p>
       </footer>
     </div>
