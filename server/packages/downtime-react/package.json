@@ -1,0 +1,21 @@
+{
+  "name": "@downtime/react",
+  "version": "1.0.0",
+  "description": "React components for Downtime.so status pages",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": ["status-page", "incident", "downtime", "react"],
+  "license": "MIT"
+}

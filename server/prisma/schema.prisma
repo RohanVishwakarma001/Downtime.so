@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  orgId         String
+  org           Organization   @relation(fields: [orgId], references: [id])
+  createdAt     DateTime       @default(now())
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Organization {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  apiKey    String    @unique @default(cuid())
+  users     User[]
+  services  Service[]
+  createdAt DateTime  @default(now())
+}
+
+model Service {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  status      ServiceStatus @default(OPERATIONAL)
+  orgId       String
+  org         Organization  @relation(fields: [orgId], references: [id])
+  incidents   Incident[]
+  subscribers Subscriber[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum ServiceStatus {
+  OPERATIONAL
+  DEGRADED
+  PARTIAL_OUTAGE
+  MAJOR_OUTAGE
+  MAINTENANCE
+}
+
+model Incident {
+  id         String           @id @default(cuid())
+  title      String
+  status     IncidentStatus   @default(INVESTIGATING)
+  impact     IncidentImpact   @default(MINOR)
+  serviceId  String
+  service    Service          @relation(fields: [serviceId], references: [id])
+  updates    IncidentUpdate[]
+  resolvedAt DateTime?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+enum IncidentStatus {
+  INVESTIGATING
+  IDENTIFIED
+  MONITORING
+  RESOLVED
+}
+
+enum IncidentImpact {
+  MINOR
+  MAJOR
+  CRITICAL
+}
+
+model IncidentUpdate {
+  id         String         @id @default(cuid())
+  message    String
+  status     IncidentStatus
+  incidentId String
+  incident   Incident       @relation(fields: [incidentId], references: [id])
+  createdAt  DateTime       @default(now())
+}
+
+model Subscriber {
+  id                String            @id @default(cuid())
+  email             String?
+  phone             String?
+  serviceId         String
+  service           Service           @relation(fields: [serviceId], references: [id])
+  createdAt         DateTime          @default(now())
+  notificationLogs  NotificationLog[]
+}
+
+model NotificationLog {
+  id           String     @id @default(cuid())
+  subscriberId String
+  subscriber   Subscriber @relation(fields: [subscriberId], references: [id])
+  channel      String
+  status       String
+  incidentId   String
+  createdAt    DateTime   @default(now())
+}
