@@ -257,6 +257,8 @@ router.post('/:id/updates', authMiddleware, async (req: Request, res: Response) 
       return res.status(404).json({ error: 'Incident not found' });
     }
 
+    let serviceRestoredToOperational = false;
+
     const update = await prisma.$transaction(async (tx) => {
       const incUpdate = await tx.incidentUpdate.create({
         data: {
@@ -288,6 +290,7 @@ router.post('/:id/updates', authMiddleware, async (req: Request, res: Response) 
             where: { id: incident.serviceId },
             data: { status: 'OPERATIONAL' },
           });
+          serviceRestoredToOperational = true;
         }
       }
 
@@ -297,7 +300,7 @@ router.post('/:id/updates', authMiddleware, async (req: Request, res: Response) 
     // Enqueue notification
     await notificationQueue.add('notify', { incidentId: req.params.id, type: 'incident_updated' });
 
-    // Publish SSE
+    // Publish SSE: timeline update
     await publishStatusUpdate(incident.service.org.slug, {
       type: 'incident_update_posted',
       incidentId: req.params.id,
@@ -305,6 +308,16 @@ router.post('/:id/updates', authMiddleware, async (req: Request, res: Response) 
       status: update.status,
       message: update.message,
     });
+
+    // Publish SSE: service status restored
+    if (serviceRestoredToOperational) {
+      await publishStatusUpdate(incident.service.org.slug, {
+        type: 'service_status_changed',
+        serviceId: incident.serviceId,
+        serviceName: incident.service.name,
+        status: 'OPERATIONAL',
+      });
+    }
 
     return res.status(201).json({ update });
   } catch (err) {

@@ -10,6 +10,7 @@ interface StatusBadgeProps {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; dot: string; bg: string; text: string; border: string }> = {
+  // Service statuses
   OPERATIONAL: {
     label: 'Operational',
     dot: 'bg-status-operational',
@@ -44,6 +45,35 @@ const STATUS_CONFIG: Record<string, { label: string; dot: string; bg: string; te
     bg: 'bg-blue-950/50',
     text: 'text-blue-400',
     border: 'border-blue-900/50',
+  },
+  // Incident statuses
+  INVESTIGATING: {
+    label: 'Investigating',
+    dot: 'bg-orange-500',
+    bg: 'bg-orange-950/50',
+    text: 'text-orange-400',
+    border: 'border-orange-900/50',
+  },
+  IDENTIFIED: {
+    label: 'Identified',
+    dot: 'bg-yellow-500',
+    bg: 'bg-yellow-950/50',
+    text: 'text-yellow-400',
+    border: 'border-yellow-900/50',
+  },
+  MONITORING: {
+    label: 'Monitoring',
+    dot: 'bg-blue-500',
+    bg: 'bg-blue-950/50',
+    text: 'text-blue-400',
+    border: 'border-blue-900/50',
+  },
+  RESOLVED: {
+    label: 'Resolved',
+    dot: 'bg-green-500',
+    bg: 'bg-green-950/50',
+    text: 'text-green-400',
+    border: 'border-green-900/50',
   },
 };
 

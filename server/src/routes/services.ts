@@ -17,6 +17,21 @@ const updateServiceSchema = z.object({
   status: z.enum(['OPERATIONAL', 'DEGRADED', 'PARTIAL_OUTAGE', 'MAJOR_OUTAGE', 'MAINTENANCE']).optional(),
 });
 
+// GET /api/v1/services/org - Get org info including API key
+router.get('/org', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const org = await prisma.organization.findUnique({
+      where: { id: req.user!.orgId },
+      select: { id: true, name: true, slug: true, apiKey: true },
+    });
+    if (!org) return res.status(404).json({ error: 'Organization not found' });
+    return res.json({ org });
+  } catch (err) {
+    console.error('[services GET /org]', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // GET /api/v1/services - List org's services
 router.get('/', authMiddleware, async (req: Request, res: Response) => {
   try {
@@ -139,7 +154,14 @@ router.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Service not found' });
     }
 
-    await prisma.service.delete({ where: { id: req.params.id } });
+    // Delete in FK dependency order: notification logs → subscribers → incident updates → incidents → service
+    await prisma.$transaction([
+      prisma.notificationLog.deleteMany({ where: { subscriber: { serviceId: req.params.id } } }),
+      prisma.subscriber.deleteMany({ where: { serviceId: req.params.id } }),
+      prisma.incidentUpdate.deleteMany({ where: { incident: { serviceId: req.params.id } } }),
+      prisma.incident.deleteMany({ where: { serviceId: req.params.id } }),
+      prisma.service.delete({ where: { id: req.params.id } }),
+    ]);
 
     return res.json({ message: 'Service deleted successfully' });
   } catch (err) {

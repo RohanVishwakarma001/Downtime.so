@@ -55,14 +55,13 @@ function CodeBlock({ code, language = 'bash' }: { code: string; language?: strin
 export default function SettingsPage() {
   const user = getUser();
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-  const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const APP_URL =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
 
   const { data: orgData } = useQuery({
     queryKey: ['org-settings'],
-    queryFn: () => api.get('/api/v1/services').then(() => {
-      // We fetch services just to get org info from context; real implementation would have /api/v1/org
-      return { apiKey: null };
-    }),
+    queryFn: () => api.get('/api/v1/services/org').then((r) => r.data),
   });
 
   if (!user) return null;
@@ -149,9 +148,15 @@ function App() {
             <h2 className="font-semibold">API Access</h2>
           </div>
 
-          <div className="bg-yellow-950/30 border border-yellow-900/30 rounded-lg px-4 py-3 text-sm text-yellow-400 mb-5">
-            Your API key is shown on account creation. To get it, check your browser's localStorage
-            or contact support. Keep it secret — it provides full API access.
+          <div className="mb-5">
+            <label className="text-xs text-muted block mb-1.5">Your API Key</label>
+            <div className="flex items-center gap-3">
+              <code className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm font-mono text-muted-foreground truncate">
+                {orgData?.org?.apiKey ?? 'Loading...'}
+              </code>
+              {orgData?.org?.apiKey && <CopyButton text={orgData.org.apiKey} label="Copy key" />}
+            </div>
+            <p className="text-xs text-muted mt-1.5">Keep this secret — it provides full API access to your organization.</p>
           </div>
 
           <CodeBlock

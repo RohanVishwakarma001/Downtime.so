@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -33,6 +33,13 @@ export function CreateIncidentModal({ open, onClose, services }: CreateIncidentM
     initialMessage: '',
   });
   const [loading, setLoading] = useState(false);
+
+  // Sync serviceId when services load (services may be empty on first render)
+  useEffect(() => {
+    if (services.length > 0 && !form.serviceId) {
+      setForm((p) => ({ ...p, serviceId: services[0].id }));
+    }
+  }, [services]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
