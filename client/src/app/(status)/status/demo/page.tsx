@@ -13,11 +13,39 @@ import { formatRelativeTime } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 // ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+interface IncidentUpdate {
+  id: string;
+  status: string;
+  message: string;
+  createdAt: string;
+}
+
+interface IncidentData {
+  id: string;
+  title: string;
+  status: string;
+  impact: string;
+  serviceName: string;
+  serviceId: string;
+  createdAt: string;
+  updates: IncidentUpdate[];
+}
+
+interface ServiceData {
+  id: string;
+  name: string;
+  description: string;
+  status: string;
+}
+
+// ---------------------------------------------------------------------------
 // Mock data — all timestamps derived from "now" so relative times are accurate
 // ---------------------------------------------------------------------------
 const now = Date.now();
 
-const INITIAL_SERVICES = [
+const INITIAL_SERVICES: ServiceData[] = [
   { id: 'api',   name: 'API',                description: 'Core REST API & GraphQL',   status: 'OPERATIONAL'   },
   { id: 'web',   name: 'Web Application',    description: 'Main dashboard & app',      status: 'PARTIAL_OUTAGE' },
   { id: 'db',    name: 'Database',           description: 'Primary PostgreSQL cluster', status: 'OPERATIONAL'   },
@@ -26,10 +54,10 @@ const INITIAL_SERVICES = [
   { id: 'jobs',  name: 'Background Jobs',    description: 'Async task processing',     status: 'OPERATIONAL'   },
 ];
 
-const CDN_INCIDENT = {
+const CDN_INCIDENT: IncidentData = {
   id: 'cdn-incident',
   title: 'CDN edge nodes experiencing packet loss in US-East region',
-  status: 'MONITORING' as const,
+  status: 'MONITORING',
   impact: 'CRITICAL',
   serviceName: 'CDN / Edge Network',
   serviceId: 'cdn',
@@ -59,10 +87,10 @@ const CDN_INCIDENT = {
   ],
 };
 
-const AUTH_INCIDENT = {
+const AUTH_INCIDENT: IncidentData = {
   id: 'auth-incident',
   title: 'Elevated OAuth callback failure rate',
-  status: 'INVESTIGATING' as const,
+  status: 'INVESTIGATING',
   impact: 'MINOR',
   serviceName: 'Authentication',
   serviceId: 'auth',
@@ -112,8 +140,8 @@ const OVERALL_CONFIG: Record<string, { label: string; color: string; bg: string;
 // Component
 // ---------------------------------------------------------------------------
 export default function DemoPage() {
-  const [services, setServices]           = useState(INITIAL_SERVICES);
-  const [incidents, setIncidents]         = useState([CDN_INCIDENT, AUTH_INCIDENT]);
+  const [services, setServices]           = useState<ServiceData[]>(INITIAL_SERVICES);
+  const [incidents, setIncidents]         = useState<IncidentData[]>([CDN_INCIDENT, AUTH_INCIDENT]);
   const [sseConnected, setSseConnected]   = useState(false);
   const [liveUpdateIn, setLiveUpdateIn]   = useState(false);
   const [subscribeEmail, setSubscribeEmail] = useState('');
@@ -149,7 +177,7 @@ export default function DemoPage() {
           if (inc.id !== 'cdn-incident') return inc;
           return {
             ...inc,
-            status: 'RESOLVED' as const,
+            status: 'RESOLVED',
             updates: [{ ...LIVE_UPDATE, createdAt: new Date().toISOString() }, ...inc.updates],
           };
         })
