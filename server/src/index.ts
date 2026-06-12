@@ -14,6 +14,9 @@ import publicRouter from './routes/public';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Trust Render's (and other reverse-proxy) X-Forwarded-For header
+app.set('trust proxy', 1);
+
 // CORS
 app.use(
   cors({
