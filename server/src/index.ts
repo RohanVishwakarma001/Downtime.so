@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 4000;
 // CORS
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: (process.env.CLIENT_URL || 'http://localhost:3000').replace(/\/$/, ''),
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
