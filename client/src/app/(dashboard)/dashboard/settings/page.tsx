@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Copy, Check, Key, Globe, Webhook, Code2, ExternalLink } from 'lucide-react';
 import { api } from '@/lib/api';
@@ -55,9 +55,13 @@ function CodeBlock({ code, language = 'bash' }: { code: string; language?: strin
 export default function SettingsPage() {
   const user = getUser();
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-  const APP_URL =
-    process.env.NEXT_PUBLIC_APP_URL ||
-    (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+
+  // Resolve the public origin at runtime so the status-page URL always matches
+  // the domain the dashboard is actually served from (never localhost in prod).
+  const [APP_URL, setAppUrl] = useState(process.env.NEXT_PUBLIC_APP_URL || '');
+  useEffect(() => {
+    setAppUrl(process.env.NEXT_PUBLIC_APP_URL || window.location.origin);
+  }, []);
 
   const { data: orgData } = useQuery({
     queryKey: ['org-settings'],
