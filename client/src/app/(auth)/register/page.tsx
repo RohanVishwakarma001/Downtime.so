@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Zap, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '@/lib/api';
-import { setToken, setRefreshToken, setUser } from '@/lib/auth';
+import { setToken, setRefreshToken, setUser, isAuthenticated } from '@/lib/auth';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,6 +18,14 @@ export default function RegisterPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Already logged in? Don't show the register form (e.g. via the Back button) —
+  // bounce to the dashboard.
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.replace('/dashboard');
+    }
+  }, [router]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -43,7 +51,7 @@ export default function RegisterPage() {
       setRefreshToken(data.refreshToken);
       setUser(data.user);
       toast.success('Account created! Welcome aboard 🎉');
-      router.push('/dashboard');
+      router.replace('/dashboard');
     } catch (err: any) {
       const msg = err.response?.data?.error || 'Registration failed. Please try again.';
       toast.error(msg);

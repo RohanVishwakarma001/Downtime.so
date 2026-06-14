@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import twilio from 'twilio';
 import { redis } from '../lib/redis';
+import { generateUnsubscribeToken } from '../lib/tokens';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -43,7 +44,7 @@ export async function sendIncidentEmail(
     const impactLabel = impactLabels[incident.impact] || incident.impact;
     const baseUrl = process.env.CLIENT_URL || 'https://downtime.so';
     const unsubscribeUrl = unsubscribeId
-      ? `${baseUrl}/unsubscribe?id=${unsubscribeId}&token=${Buffer.from(unsubscribeId).toString('base64')}`
+      ? `${baseUrl}/unsubscribe?id=${unsubscribeId}&token=${generateUnsubscribeToken(unsubscribeId)}`
       : null;
 
     const subject =

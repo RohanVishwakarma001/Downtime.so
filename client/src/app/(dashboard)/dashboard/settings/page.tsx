@@ -209,8 +209,14 @@ curl -X POST ${API_URL}/api/v1/incidents/api \\
             <h2 className="font-semibold">Webhook Integrations</h2>
           </div>
           <p className="text-sm text-muted mb-5">
-            Add ?serviceId=YOUR_SERVICE_ID to each webhook URL, or include it in
-            the request body.
+            Append{" "}
+            <code className="text-primary bg-primary-muted px-1 py-0.5 rounded text-xs">
+              ?serviceId=YOUR_SERVICE_ID&amp;secret=YOUR_WEBHOOK_SECRET
+            </code>{" "}
+            to each webhook URL (or send both in the request body). The{" "}
+            <span className="text-foreground">webhook secret</span> is shown on
+            each service&apos;s page and is required — requests without a valid
+            secret are rejected.
           </p>
 
           <div className="space-y-4">
@@ -220,10 +226,10 @@ curl -X POST ${API_URL}/api/v1/incidents/api \\
               </label>
               <div className="flex items-center gap-3">
                 <code className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-xs font-mono text-muted-foreground overflow-x-auto">
-                  {uptimeRobotWebhook}?serviceId=YOUR_SERVICE_ID
+                  {uptimeRobotWebhook}?serviceId=YOUR_SERVICE_ID&secret=YOUR_WEBHOOK_SECRET
                 </code>
                 <CopyButton
-                  text={`${uptimeRobotWebhook}?serviceId=YOUR_SERVICE_ID`}
+                  text={`${uptimeRobotWebhook}?serviceId=YOUR_SERVICE_ID&secret=YOUR_WEBHOOK_SECRET`}
                 />
               </div>
               <p className="text-xs text-muted mt-1.5">
@@ -237,10 +243,10 @@ curl -X POST ${API_URL}/api/v1/incidents/api \\
               </label>
               <div className="flex items-center gap-3">
                 <code className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-xs font-mono text-muted-foreground overflow-x-auto">
-                  {datadogWebhook}?serviceId=YOUR_SERVICE_ID
+                  {datadogWebhook}?serviceId=YOUR_SERVICE_ID&secret=YOUR_WEBHOOK_SECRET
                 </code>
                 <CopyButton
-                  text={`${datadogWebhook}?serviceId=YOUR_SERVICE_ID`}
+                  text={`${datadogWebhook}?serviceId=YOUR_SERVICE_ID&secret=YOUR_WEBHOOK_SECRET`}
                 />
               </div>
               <p className="text-xs text-muted mt-1.5">

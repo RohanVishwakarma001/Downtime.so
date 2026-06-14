@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma';
 import { authMiddleware } from '../middleware/auth';
+import { verifyUnsubscribeToken } from '../lib/tokens';
 
 const router = Router();
 
@@ -78,14 +79,13 @@ router.delete('/:id', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Subscriber not found' });
     }
 
-    // Simple token validation: token = base64(subscriberId)
+    // Unsubscribe is authorized either by a signed (HMAC) token from the
+    // email link, or by a logged-in dashboard user.
     if (token) {
-      const decoded = Buffer.from(token as string, 'base64').toString('utf8');
-      if (decoded !== subscriber.id) {
+      if (!verifyUnsubscribeToken(subscriber.id, token as string)) {
         return res.status(403).json({ error: 'Invalid unsubscribe token' });
       }
     } else {
-      // Require auth if no token
       const authHeader = req.headers.authorization;
       if (!authHeader) {
         return res.status(401).json({ error: 'Authentication required' });
@@ -129,25 +129,6 @@ router.get('/', authMiddleware, async (req: Request, res: Response) => {
     return res.json({ subscribers, total, page: pageNum, limit: limitNum });
   } catch (err) {
     console.error('[subscribers GET /]', err);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// GET /api/v1/subscribers/unsubscribe-token/:id - Generate unsubscribe token
-router.get('/unsubscribe-token/:id', async (req: Request, res: Response) => {
-  try {
-    const subscriber = await prisma.subscriber.findUnique({
-      where: { id: req.params.id },
-    });
-
-    if (!subscriber) {
-      return res.status(404).json({ error: 'Subscriber not found' });
-    }
-
-    const token = Buffer.from(subscriber.id).toString('base64');
-    return res.json({ token });
-  } catch (err) {
-    console.error('[subscribers GET /unsubscribe-token/:id]', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });

@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import crypto from 'crypto';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma';
 import { apiKeyMiddleware } from '../middleware/apiKey';
@@ -6,6 +7,19 @@ import { notificationQueue } from '../lib/queue';
 import { publishStatusUpdate } from '../services/notifications';
 
 const router = Router();
+
+/**
+ * Constant-time check that an inbound webhook carries the service's secret.
+ * Without this, anyone who guesses a serviceId could change a service's
+ * status, fabricate incidents, and trigger notification spam.
+ */
+function hasValidWebhookSecret(provided: unknown, expected: string): boolean {
+  if (typeof provided !== 'string' || provided.length === 0) return false;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
 
 type ServiceStatus = 'OPERATIONAL' | 'DEGRADED' | 'PARTIAL_OUTAGE' | 'MAJOR_OUTAGE' | 'MAINTENANCE';
 
@@ -47,6 +61,12 @@ router.post('/uptimerobot', async (req: Request, res: Response) => {
 
     if (!service) {
       return res.status(200).json({ received: true });
+    }
+
+    // Authenticate the webhook against the service's secret.
+    const providedSecret = body.secret || req.query.secret;
+    if (!hasValidWebhookSecret(providedSecret, service.webhookSecret)) {
+      return res.status(401).json({ error: 'Invalid or missing webhook secret' });
     }
 
     let newStatus: ServiceStatus = 'OPERATIONAL';
@@ -131,6 +151,12 @@ router.post('/datadog', async (req: Request, res: Response) => {
 
     if (!service) {
       return res.status(200).json({ received: true });
+    }
+
+    // Authenticate the webhook against the service's secret.
+    const providedSecret = body.secret || req.query.secret;
+    if (!hasValidWebhookSecret(providedSecret, service.webhookSecret)) {
+      return res.status(401).json({ error: 'Invalid or missing webhook secret' });
     }
 
     const alertStatus = body.alert_status || body.event?.alert_status;

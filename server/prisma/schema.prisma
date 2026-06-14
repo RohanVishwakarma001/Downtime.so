@@ -38,11 +38,12 @@ model Organization {
 }
 
 model Service {
-  id          String        @id @default(cuid())
-  name        String
-  description String?
-  status      ServiceStatus @default(OPERATIONAL)
-  orgId       String
+  id            String        @id @default(cuid())
+  name          String
+  description   String?
+  status        ServiceStatus @default(OPERATIONAL)
+  webhookSecret String        @default(cuid())
+  orgId         String
   org         Organization  @relation(fields: [orgId], references: [id])
   incidents   Incident[]
   subscribers Subscriber[]

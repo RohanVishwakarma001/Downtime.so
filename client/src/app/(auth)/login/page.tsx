@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Zap, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '@/lib/api';
-import { setToken, setRefreshToken, setUser } from '@/lib/auth';
+import { setToken, setRefreshToken, setUser, isAuthenticated } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,6 +14,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Already logged in? Don't show the login form (e.g. via the Back button) —
+  // bounce to the dashboard.
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.replace('/dashboard');
+    }
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,7 +37,7 @@ export default function LoginPage() {
       setRefreshToken(data.refreshToken);
       setUser(data.user);
       toast.success('Welcome back!');
-      router.push('/dashboard');
+      router.replace('/dashboard');
     } catch (err: any) {
       const msg = err.response?.data?.error || 'Login failed. Please try again.';
       toast.error(msg);
