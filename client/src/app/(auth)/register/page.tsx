@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Zap, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '@/lib/api';
 import { setToken, setRefreshToken, setUser, isAuthenticated } from '@/lib/auth';
+import { AuroraBackground, GlassCard, GradientText, FadeIn } from '@/components/ui';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -61,17 +63,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-10">
+      <AuroraBackground />
+      <FadeIn className="w-full max-w-sm">
+        <GlassCard strong className="p-8">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" fill="white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-[#8b5cf6] flex items-center justify-center shadow-glow">
+              <Zap className="w-4.5 h-4.5 text-white" fill="white" />
             </div>
             <span className="text-xl font-bold">Downtime.so</span>
           </Link>
-          <h1 className="text-2xl font-bold">Create your account</h1>
+          <h1 className="text-2xl font-bold">
+            Create your <GradientText>account</GradientText>
+          </h1>
           <p className="text-muted text-sm mt-1">Get your status page in minutes</p>
         </div>
 
@@ -86,7 +92,7 @@ export default function RegisterPage() {
               placeholder="Jane Smith"
               autoComplete="name"
               required
-              className="w-full bg-surface border border-border rounded-lg px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
             />
           </div>
 
@@ -99,7 +105,7 @@ export default function RegisterPage() {
               onChange={handleChange}
               placeholder="Acme Corp"
               required
-              className="w-full bg-surface border border-border rounded-lg px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
             />
             {form.orgName && (
               <p className="text-xs text-muted mt-1">
@@ -118,7 +124,7 @@ export default function RegisterPage() {
               placeholder="you@example.com"
               autoComplete="email"
               required
-              className="w-full bg-surface border border-border rounded-lg px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
             />
           </div>
 
@@ -134,7 +140,7 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 required
                 minLength={8}
-                className="w-full bg-surface border border-border rounded-lg px-3.5 py-2.5 pr-10 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 pr-10 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
               />
               <button
                 type="button"
@@ -146,13 +152,15 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white py-2.5 rounded-lg font-medium text-sm transition-colors"
+            whileHover={{ scale: loading ? 1 : 1.015 }}
+            whileTap={{ scale: loading ? 1 : 0.985 }}
+            className="w-full bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed text-white py-2.5 rounded-xl font-medium text-sm transition-shadow"
           >
             {loading ? 'Creating account...' : 'Create account'}
-          </button>
+          </motion.button>
 
           <p className="text-center text-xs text-muted">
             By signing up you agree to our Terms of Service and Privacy Policy.
@@ -165,7 +173,8 @@ export default function RegisterPage() {
             Sign in
           </Link>
         </p>
-      </div>
+        </GlassCard>
+      </FadeIn>
     </div>
   );
 }

@@ -118,7 +118,7 @@ export default function IncidentDetailPage() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-surface border border-border rounded-xl p-6 mb-6"
+        className="glass rounded-2xl p-6 mb-6"
       >
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1 min-w-0">
@@ -146,7 +146,7 @@ export default function IncidentDetailPage() {
                       className={`w-7 h-7 rounded-full flex items-center justify-center border-2 transition-all ${
                         isCompleted
                           ? `${STATUS_COLORS[step]} border-transparent`
-                          : 'border-border bg-surface-2'
+                          : 'border-white/15 bg-white/5'
                       } ${isCurrent ? 'ring-2 ring-offset-2 ring-offset-surface ring-opacity-50 ring-current' : ''}`}
                     >
                       {isCompleted && <CheckCircle2 className="w-4 h-4 text-white" />}
@@ -156,7 +156,7 @@ export default function IncidentDetailPage() {
                     </span>
                   </div>
                   {index < STATUS_STEPS.length - 1 && (
-                    <div className={`flex-1 h-0.5 mx-1 -mt-5 ${index < currentStepIndex ? 'bg-primary' : 'bg-border'}`} />
+                    <div className={`flex-1 h-0.5 mx-1 -mt-5 ${index < currentStepIndex ? 'bg-primary' : 'bg-white/10'}`} />
                   )}
                 </div>
               );
@@ -172,7 +172,7 @@ export default function IncidentDetailPage() {
       </motion.div>
 
       {/* Timeline */}
-      <div className="bg-surface border border-border rounded-xl p-6 mb-6">
+      <div className="glass rounded-2xl p-6 mb-6">
         <h2 className="font-semibold text-sm mb-5">Timeline</h2>
         <IncidentTimeline updates={incident.updates || []} />
       </div>
@@ -182,7 +182,7 @@ export default function IncidentDetailPage() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          className="glass rounded-2xl p-6"
         >
           <h2 className="font-semibold text-sm mb-4">Post Update</h2>
           <form onSubmit={handleAddUpdate} className="space-y-4">
@@ -196,8 +196,8 @@ export default function IncidentDetailPage() {
                     onClick={() => setUpdateStatus(s)}
                     className={`py-1.5 px-2 rounded-lg text-xs font-medium border transition-colors ${
                       updateStatus === s
-                        ? 'bg-primary-muted border-primary text-primary'
-                        : 'border-border text-muted hover:border-border-2'
+                        ? 'bg-primary/15 border-primary text-primary ring-1 ring-primary/25'
+                        : 'border-white/10 text-muted hover:border-white/20 hover:bg-white/5'
                     }`}
                   >
                     {s.charAt(0) + s.slice(1).toLowerCase()}
@@ -214,7 +214,7 @@ export default function IncidentDetailPage() {
                 placeholder="Describe what's happening and what actions are being taken..."
                 rows={4}
                 required
-                className="w-full bg-surface-2 border border-border rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all resize-none"
               />
             </div>
 
@@ -222,7 +222,7 @@ export default function IncidentDetailPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex items-center gap-2 bg-primary hover:bg-primary-hover disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center gap-2 bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow disabled:opacity-50 text-white px-4 py-2 rounded-xl text-sm font-medium transition-shadow"
               >
                 <Send className="w-4 h-4" />
                 {submitting ? 'Posting...' : 'Post Update'}

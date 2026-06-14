@@ -8,6 +8,7 @@ import { formatRelativeTime } from '@/lib/utils';
 import { publicApi } from '@/lib/api';
 import { CheckCircle2, AlertTriangle, Bell, Loader2, Server } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { AuroraBackground, GradientText } from '@/components/ui';
 
 interface Subscriber {
   email?: string;
@@ -208,25 +209,49 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen">
+      <AuroraBackground />
       <div className="max-w-3xl mx-auto px-4 py-10">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center justify-between mb-8"
+        >
           <div>
-            <h1 className="text-2xl font-bold">{initialOrg.name}</h1>
+            <h1 className="text-2xl font-bold">
+              <GradientText>{initialOrg.name}</GradientText>
+            </h1>
             <p className="text-muted text-sm mt-0.5">Status Page</p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-muted">
-            <div className={`w-2 h-2 rounded-full ${sseConnected ? 'bg-status-operational' : 'bg-muted'}`} />
+          <div className="flex items-center gap-2 text-xs text-muted glass rounded-full px-3 py-1.5">
+            <span className="relative flex h-2 w-2">
+              {sseConnected && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-status-operational opacity-75" />
+              )}
+              <span
+                className={`relative inline-flex h-2 w-2 rounded-full ${
+                  sseConnected ? 'bg-status-operational' : 'bg-muted'
+                }`}
+              />
+            </span>
             {sseConnected ? 'Live' : 'Connecting...'}
           </div>
-        </div>
+        </motion.div>
 
         {/* Overall status banner */}
         <motion.div
           layout
-          className={`flex items-center gap-3 px-5 py-4 rounded-xl border mb-8 ${overallConfig.bg}`}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className={`relative flex items-center gap-3 px-5 py-4 rounded-2xl border mb-8 overflow-hidden glass ${overallConfig.bg}`}
         >
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full blur-2xl opacity-40 ${overallConfig.color.replace('text-', 'bg-')}`}
+          />
           <OverallIcon className={`w-5 h-5 ${overallConfig.color} flex-shrink-0`} />
           <span className={`font-semibold ${overallConfig.color}`}>{overallConfig.label}</span>
         </motion.div>
@@ -234,7 +259,7 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
         {/* Services */}
         <section className="mb-8">
           <h2 className="text-sm font-semibold text-muted mb-4 uppercase tracking-wide">Services</h2>
-          <div className="bg-surface border border-border rounded-xl divide-y divide-border">
+          <div className="glass rounded-2xl divide-y divide-white/5 overflow-hidden">
             {services.length === 0 ? (
               <div className="py-10 text-center">
                 <Server className="w-8 h-8 text-muted mx-auto mb-2" />
@@ -244,10 +269,10 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
               services.map((service, i) => (
                 <motion.div
                   key={service.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="flex items-center justify-between px-5 py-3.5"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-center justify-between px-5 py-3.5 hover:bg-white/5 transition-colors"
                 >
                   <div>
                     <p className="font-medium text-sm">{service.name}</p>
@@ -276,9 +301,9 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
                 {activeIncidents.map((incident: any) => (
                   <div
                     key={incident.id}
-                    className="bg-surface border border-red-900/30 rounded-xl overflow-hidden"
+                    className="glass rounded-2xl border-red-500/20 overflow-hidden shadow-glass"
                   >
-                    <div className="px-5 py-4 border-b border-border flex items-start gap-3">
+                    <div className="px-5 py-4 border-b border-white/10 flex items-start gap-3">
                       <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -301,7 +326,7 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
         </AnimatePresence>
 
         {/* Subscribe form */}
-        <section className="bg-surface border border-border rounded-xl p-6">
+        <section className="glass rounded-2xl p-6">
           <div className="flex items-center gap-2 mb-4">
             <Bell className="w-5 h-5 text-primary" />
             <h2 className="font-semibold">Get Notified</h2>
@@ -319,7 +344,7 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
                   value={subscribeEmail}
                   onChange={(e) => setSubscribeEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
                 />
               </div>
               <div>
@@ -329,7 +354,7 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
                   value={subscribePhone}
                   onChange={(e) => setSubscribePhone(e.target.value)}
                   placeholder="+1234567890"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
                 />
               </div>
             </div>
@@ -340,7 +365,7 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
                 <select
                   value={selectedServiceId}
                   onChange={(e) => setSelectedServiceId(e.target.value)}
-                  className="w-full bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
                 >
                   {services.map((s) => (
                     <option key={s.id} value={s.id}>{s.name}</option>
@@ -349,17 +374,19 @@ export function StatusClient({ initialOrg, initialServices, initialOverallStatus
               </div>
             )}
 
-            <button
+            <motion.button
               type="submit"
               disabled={subscribing}
-              className="flex items-center gap-2 bg-primary hover:bg-primary-hover disabled:opacity-50 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
+              whileHover={{ scale: subscribing ? 1 : 1.015 }}
+              whileTap={{ scale: subscribing ? 1 : 0.985 }}
+              className="flex items-center gap-2 bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow disabled:opacity-50 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-shadow"
             >
               {subscribing ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Subscribing...</>
               ) : (
                 <><Bell className="w-4 h-4" /> Subscribe</>
               )}
-            </button>
+            </motion.button>
           </form>
         </section>
 

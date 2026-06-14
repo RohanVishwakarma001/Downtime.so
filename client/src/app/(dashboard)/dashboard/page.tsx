@@ -9,6 +9,7 @@ import { StatusBadge } from '@/components/ui/StatusBadge';
 import { formatRelativeTime } from '@/lib/utils';
 import { CreateIncidentModal } from '@/components/incidents/CreateIncidentModal';
 import { getUser } from '@/lib/auth';
+import { FadeIn } from '@/components/ui';
 
 export default function DashboardPage() {
   const user = getUser();
@@ -48,14 +49,14 @@ export default function DashboardPage() {
         <div className="flex gap-3">
           <Link
             href="/dashboard/services"
-            className="flex items-center gap-2 border border-border hover:border-border-2 px-4 py-2 rounded-lg text-sm transition-colors"
+            className="flex items-center gap-2 border border-white/10 hover:border-white/20 hover:bg-white/5 px-4 py-2 rounded-xl text-sm transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Service
           </Link>
           <button
             onClick={() => setCreateIncidentOpen(true)}
-            className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow text-white px-4 py-2 rounded-xl text-sm font-medium transition-shadow"
           >
             <AlertTriangle className="w-4 h-4" />
             Create Incident
@@ -64,8 +65,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats cards */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-surface border border-border rounded-xl p-5">
+      <FadeIn className="grid grid-cols-3 gap-4 mb-8">
+        <div className="glass rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-lg bg-red-950/50 flex items-center justify-center">
               <AlertTriangle className="w-5 h-5 text-red-400" />
@@ -78,7 +79,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="bg-surface border border-border rounded-xl p-5">
+        <div className="glass rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-lg bg-primary-muted flex items-center justify-center">
               <Server className="w-5 h-5 text-primary" />
@@ -91,7 +92,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="bg-surface border border-border rounded-xl p-5">
+        <div className="glass rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-lg bg-green-950/50 flex items-center justify-center">
               <Users className="w-5 h-5 text-green-400" />
@@ -101,18 +102,18 @@ export default function DashboardPage() {
           <p className="text-3xl font-bold">{totalSubscribers}</p>
           <p className="text-xs text-muted mt-1">Across all services</p>
         </div>
-      </div>
+      </FadeIn>
 
-      <div className="grid grid-cols-2 gap-6">
+      <FadeIn delay={0.1} className="grid grid-cols-2 gap-6">
         {/* Services */}
-        <div className="bg-surface border border-border rounded-xl">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+        <div className="glass rounded-2xl">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
             <h2 className="font-semibold text-sm">Services</h2>
             <Link href="/dashboard/services" className="text-xs text-muted hover:text-primary transition-colors flex items-center gap-1">
               View all <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-white/5">
             {services.length === 0 ? (
               <div className="px-5 py-8 text-center">
                 <Server className="w-8 h-8 text-muted mx-auto mb-2" />
@@ -141,14 +142,14 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent incidents */}
-        <div className="bg-surface border border-border rounded-xl">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+        <div className="glass rounded-2xl">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
             <h2 className="font-semibold text-sm">Recent Incidents</h2>
             <Link href="/dashboard/incidents" className="text-xs text-muted hover:text-primary transition-colors flex items-center gap-1">
               View all <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-white/5">
             {recentIncidents.length === 0 ? (
               <div className="px-5 py-8 text-center">
                 <Activity className="w-8 h-8 text-muted mx-auto mb-2" />
@@ -160,7 +161,7 @@ export default function DashboardPage() {
                 <Link
                   key={incident.id}
                   href={`/dashboard/incidents/${incident.id}`}
-                  className="block px-5 py-3 hover:bg-surface-2 transition-colors"
+                  className="block px-5 py-3 hover:bg-white/5 transition-colors"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-sm font-medium truncate flex-1">{incident.title}</p>
@@ -176,7 +177,7 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
-      </div>
+      </FadeIn>
 
       <CreateIncidentModal
         open={createIncidentOpen}

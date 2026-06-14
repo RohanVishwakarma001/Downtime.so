@@ -116,7 +116,7 @@ function App() {
 
       <div className="space-y-6">
         {/* Organization */}
-        <section className="bg-surface border border-border rounded-xl p-6">
+        <section className="glass rounded-2xl p-6">
           <div className="flex items-center gap-2 mb-5">
             <Globe className="w-5 h-5 text-primary" />
             <h2 className="font-semibold">Organization</h2>
@@ -168,7 +168,7 @@ function App() {
         </section>
 
         {/* API Key */}
-        <section className="bg-surface border border-border rounded-xl p-6">
+        <section className="glass rounded-2xl p-6">
           <div className="flex items-center gap-2 mb-5">
             <Key className="w-5 h-5 text-primary" />
             <h2 className="font-semibold">API Access</h2>
@@ -203,7 +203,7 @@ curl -X POST ${API_URL}/api/v1/incidents/api \\
         </section>
 
         {/* Webhooks */}
-        <section className="bg-surface border border-border rounded-xl p-6">
+        <section className="glass rounded-2xl p-6">
           <div className="flex items-center gap-2 mb-5">
             <Webhook className="w-5 h-5 text-primary" />
             <h2 className="font-semibold">Webhook Integrations</h2>
@@ -257,7 +257,7 @@ curl -X POST ${API_URL}/api/v1/incidents/api \\
         </section>
 
         {/* React Embed */}
-        <section className="bg-surface border border-border rounded-xl p-6">
+        <section className="glass rounded-2xl p-6">
           <div className="flex items-center gap-2 mb-5">
             <Code2 className="w-5 h-5 text-primary" />
             <h2 className="font-semibold">React Embed</h2>

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { isAuthenticated, getUser, clearToken } from '@/lib/auth';
 import { api } from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -52,13 +53,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!user) return null;
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden">
+    <div className="relative flex h-screen bg-background overflow-hidden">
+      {/* Ambient backdrop — restrained inside the dashboard */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(60vmax_60vmax_at_80%_-10%,rgba(99,102,241,0.12),transparent_60%),radial-gradient(50vmax_50vmax_at_-10%_110%,rgba(139,92,246,0.1),transparent_60%)]"
+      />
+
       {/* Sidebar */}
-      <aside className="w-56 flex-shrink-0 bg-surface border-r border-border flex flex-col">
+      <aside className="w-56 flex-shrink-0 glass border-y-0 border-l-0 rounded-none flex flex-col">
         {/* Logo */}
-        <div className="px-4 py-5 border-b border-border">
+        <div className="px-4 py-5 border-b border-white/10">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-[#8b5cf6] flex items-center justify-center flex-shrink-0 shadow-glow">
               <Zap className="w-4 h-4 text-white" fill="white" />
             </div>
             <span className="font-bold text-sm tracking-tight">Downtime.so</span>
@@ -66,7 +73,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* Org info */}
-        <div className="px-4 py-3 border-b border-border">
+        <div className="px-4 py-3 border-b border-white/10">
           <p className="text-xs text-muted mb-0.5">Organization</p>
           <p className="text-sm font-medium truncate">{user.orgName}</p>
           <Link
@@ -89,8 +96,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 href={href}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
                   isActive
-                    ? 'bg-primary-muted text-primary font-medium'
-                    : 'text-muted hover:text-foreground hover:bg-surface-2'
+                    ? 'bg-primary/15 text-primary font-medium ring-1 ring-primary/25'
+                    : 'text-muted hover:text-foreground hover:bg-white/5'
                 }`}
               >
                 <Icon className="w-4 h-4 flex-shrink-0" />
@@ -113,7 +120,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* User + logout */}
-        <div className="px-4 py-4 border-t border-border">
+        <div className="px-4 py-4 border-t border-white/10">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-7 h-7 rounded-full bg-primary-muted flex items-center justify-center flex-shrink-0">
               <span className="text-xs font-semibold text-primary">{user.name[0].toUpperCase()}</span>
@@ -134,7 +141,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      <main className="flex-1 overflow-y-auto">
+        <motion.div
+          key={pathname}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {children}
+        </motion.div>
+      </main>
     </div>
   );
 }

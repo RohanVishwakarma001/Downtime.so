@@ -39,7 +39,7 @@ export default function IncidentsPage() {
     return (
       <Link
         href={`/dashboard/incidents/${incident.id}`}
-        className="block bg-surface border border-border hover:border-border-2 rounded-xl px-5 py-4 transition-colors group"
+        className="block glass rounded-2xl px-5 py-4 transition-shadow hover:shadow-glow group"
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
@@ -78,7 +78,7 @@ export default function IncidentsPage() {
         </div>
         <button
           onClick={() => setCreateOpen(true)}
-          className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          className="flex items-center gap-2 bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
         >
           <Plus className="w-4 h-4" />
           Create Incident
@@ -88,7 +88,7 @@ export default function IncidentsPage() {
       {isLoading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-surface border border-border rounded-xl h-20 animate-pulse" />
+            <div key={i} className="glass rounded-2xl h-20 animate-pulse" />
           ))}
         </div>
       ) : (
@@ -106,7 +106,7 @@ export default function IncidentsPage() {
             </div>
 
             {activeIncidents.length === 0 ? (
-              <div className="bg-surface border border-dashed border-border rounded-xl py-10 text-center">
+              <div className="glass border-dashed rounded-2xl py-10 text-center">
                 <CheckCircle2 className="w-8 h-8 text-status-operational mx-auto mb-2" />
                 <p className="text-sm font-medium">All systems operational</p>
                 <p className="text-xs text-muted mt-1">No active incidents</p>

@@ -85,9 +85,9 @@ export function CreateIncidentModal({ open, onClose, services }: CreateIncidentM
             transition={{ duration: 0.2 }}
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg z-50 px-4"
           >
-            <div className="bg-surface border border-border rounded-2xl shadow-2xl">
+            <div className="glass-strong rounded-2xl shadow-glass-lg">
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-orange-400" />
                   <h2 className="text-base font-semibold">Create Incident</h2>
@@ -112,7 +112,7 @@ export function CreateIncidentModal({ open, onClose, services }: CreateIncidentM
                     onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
                     placeholder="e.g. API response times elevated"
                     required
-                    className="w-full bg-surface-2 border border-border rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
                   />
                 </div>
 
@@ -125,7 +125,7 @@ export function CreateIncidentModal({ open, onClose, services }: CreateIncidentM
                     value={form.serviceId}
                     onChange={(e) => setForm((p) => ({ ...p, serviceId: e.target.value }))}
                     required
-                    className="w-full bg-surface-2 border border-border rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all"
                   >
                     {services.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -144,8 +144,8 @@ export function CreateIncidentModal({ open, onClose, services }: CreateIncidentM
                         key={opt.value}
                         className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
                           form.impact === opt.value
-                            ? 'border-primary bg-primary-muted'
-                            : 'border-border hover:border-border-2'
+                            ? 'border-primary bg-primary/15 ring-1 ring-primary/25'
+                            : 'border-white/10 hover:border-white/20 hover:bg-white/5'
                         }`}
                       >
                         <input
@@ -176,7 +176,7 @@ export function CreateIncidentModal({ open, onClose, services }: CreateIncidentM
                     placeholder="We are currently investigating reports of..."
                     required
                     rows={4}
-                    className="w-full bg-surface-2 border border-border rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 focus:bg-white/[0.07] transition-all resize-none"
                   />
                 </div>
 
@@ -185,14 +185,14 @@ export function CreateIncidentModal({ open, onClose, services }: CreateIncidentM
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex-1 border border-border hover:border-border-2 py-2.5 rounded-lg text-sm font-medium transition-colors text-muted hover:text-foreground"
+                    className="flex-1 border border-white/10 hover:border-white/20 hover:bg-white/5 py-2.5 rounded-xl text-sm font-medium transition-colors text-muted hover:text-foreground"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 bg-primary hover:bg-primary-hover disabled:opacity-50 text-white py-2.5 rounded-lg text-sm font-medium transition-colors"
+                    className="flex-1 bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow disabled:opacity-50 text-white py-2.5 rounded-xl text-sm font-medium transition-shadow"
                   >
                     {loading ? 'Creating...' : 'Create Incident'}
                   </button>

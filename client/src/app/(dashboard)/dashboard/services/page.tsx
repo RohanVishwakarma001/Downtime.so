@@ -79,7 +79,7 @@ export default function ServicesPage() {
         </div>
         <button
           onClick={() => setShowCreate(true)}
-          className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          className="flex items-center gap-2 bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
         >
           <Plus className="w-4 h-4" />
           Add Service
@@ -88,7 +88,7 @@ export default function ServicesPage() {
 
       {/* Create form */}
       {showCreate && (
-        <div className="bg-surface border border-primary/30 rounded-xl p-5 mb-6">
+        <div className="glass border-primary/30 rounded-2xl p-5 mb-6">
           <h3 className="font-semibold mb-4 text-sm">New Service</h3>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -100,7 +100,7 @@ export default function ServicesPage() {
                   onChange={(e) => setNewService((p) => ({ ...p, name: e.target.value }))}
                   placeholder="e.g. API"
                   required
-                  className="w-full bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
               <div>
@@ -110,7 +110,7 @@ export default function ServicesPage() {
                   value={newService.description}
                   onChange={(e) => setNewService((p) => ({ ...p, description: e.target.value }))}
                   placeholder="Optional description"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
             </div>
@@ -118,14 +118,14 @@ export default function ServicesPage() {
               <button
                 type="submit"
                 disabled={creating}
-                className="bg-primary hover:bg-primary-hover disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 {creating ? 'Creating...' : 'Create Service'}
               </button>
               <button
                 type="button"
                 onClick={() => setShowCreate(false)}
-                className="border border-border hover:border-border-2 px-4 py-2 rounded-lg text-sm transition-colors text-muted"
+                className="border border-white/10 hover:border-white/20 hover:bg-white/5 px-4 py-2 rounded-lg text-sm transition-colors text-muted"
               >
                 Cancel
               </button>
@@ -138,11 +138,11 @@ export default function ServicesPage() {
       {isLoading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-surface border border-border rounded-xl h-20 animate-pulse" />
+            <div key={i} className="glass rounded-2xl h-20 animate-pulse" />
           ))}
         </div>
       ) : services.length === 0 ? (
-        <div className="text-center py-16 bg-surface border border-dashed border-border rounded-xl">
+        <div className="text-center py-16 glass border-dashed rounded-2xl">
           <Server className="w-10 h-10 text-muted mx-auto mb-3" />
           <h3 className="font-semibold mb-1">No services yet</h3>
           <p className="text-sm text-muted">Add your first service to start monitoring</p>
@@ -152,7 +152,7 @@ export default function ServicesPage() {
           {services.map((service: any) => (
             <div
               key={service.id}
-              className="bg-surface border border-border rounded-xl px-5 py-4 flex items-center justify-between gap-4"
+              className="glass rounded-2xl px-5 py-4 flex items-center justify-between gap-4"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
@@ -179,7 +179,7 @@ export default function ServicesPage() {
                     <select
                       value={editStatus}
                       onChange={(e) => setEditStatus(e.target.value)}
-                      className="bg-surface-2 border border-border rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-primary"
+                      className="bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-primary"
                     >
                       {STATUS_OPTIONS.map((s) => (
                         <option key={s} value={s}>{s.replace('_', ' ')}</option>

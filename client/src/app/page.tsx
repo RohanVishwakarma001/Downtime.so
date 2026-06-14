@@ -1,14 +1,17 @@
 import Link from 'next/link';
 import { ArrowRight, Zap, Bell, Code2, Globe, Shield, Clock } from 'lucide-react';
+import { AuroraBackground, GradientText, FadeIn, Stagger, StaggerItem } from '@/components/ui';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen">
+      <AuroraBackground />
+
       {/* Nav */}
-      <nav className="border-b border-border/50 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
+      <nav className="sticky top-0 z-50 glass border-x-0 border-t-0 rounded-none">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-[#8b5cf6] flex items-center justify-center shadow-glow">
               <Zap className="w-4 h-4 text-white" fill="white" />
             </div>
             <span className="text-lg font-bold tracking-tight">Downtime.so</span>
@@ -36,7 +39,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/register"
-              className="text-sm bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              className="text-sm bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow text-white px-4 py-2 rounded-xl font-medium transition-shadow"
             >
               Get Started
             </Link>
@@ -46,53 +49,67 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-24 text-center">
-        <div className="inline-flex items-center gap-2 bg-primary-muted border border-primary/20 rounded-full px-4 py-1.5 text-sm text-primary mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          Open source & self-hostable
-        </div>
+        <FadeIn>
+          <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-sm text-primary mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            Open source &amp; self-hostable
+          </div>
+        </FadeIn>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground mb-6 leading-tight">
-          Your Status Page
-          <br />
-          <span className="text-primary">in Minutes</span>
-        </h1>
+        <FadeIn delay={0.08}>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground mb-6 leading-tight">
+            Your Status Page
+            <br />
+            <GradientText>in Minutes</GradientText>
+          </h1>
+        </FadeIn>
 
-        <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          Developer-first incident communication for indie hackers and small teams. Like Statuspage.io
-          but actually affordable. Post real-time updates, notify subscribers, and update status via
-          REST API.
-        </p>
+        <FadeIn delay={0.16}>
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Developer-first incident communication for indie hackers and small teams. Like
+            Statuspage.io but actually affordable. Post real-time updates, notify subscribers, and
+            update status via REST API.
+          </p>
+        </FadeIn>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/register"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-8 py-3.5 rounded-xl font-semibold text-base transition-colors"
-          >
-            Get Started Free <ArrowRight className="w-5 h-5" />
-          </Link>
-          <Link
-            href="/status/demo"
-            className="inline-flex items-center gap-2 border border-border hover:border-border-2 text-muted-foreground hover:text-foreground px-8 py-3.5 rounded-xl font-semibold text-base transition-colors"
-          >
-            View Demo Page
-          </Link>
-        </div>
+        <FadeIn delay={0.24}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/register"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow text-white px-8 py-3.5 rounded-xl font-semibold text-base transition-shadow"
+            >
+              Get Started Free <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/status/demo"
+              className="inline-flex items-center gap-2 glass hover:bg-white/5 text-muted-foreground hover:text-foreground px-8 py-3.5 rounded-xl font-semibold text-base transition-colors"
+            >
+              View Demo Page
+            </Link>
+          </div>
+        </FadeIn>
 
         {/* Status preview pill */}
-        <div className="mt-16 inline-flex items-center gap-3 bg-surface border border-border rounded-2xl px-6 py-4 text-sm">
-          <div className="w-2.5 h-2.5 rounded-full bg-status-operational animate-pulse-slow" />
-          <span className="text-muted-foreground">All Systems Operational</span>
-          <span className="text-border">|</span>
-          <span className="text-muted">status.yourapp.com</span>
-        </div>
+        <FadeIn delay={0.32}>
+          <div className="mt-16 inline-flex items-center gap-3 glass rounded-2xl px-6 py-4 text-sm animate-float">
+            <div className="w-2.5 h-2.5 rounded-full bg-status-operational animate-pulse-slow" />
+            <span className="text-muted-foreground">All Systems Operational</span>
+            <span className="text-white/15">|</span>
+            <span className="text-muted">status.yourapp.com</span>
+          </div>
+        </FadeIn>
       </section>
 
       {/* Features */}
       <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
-        <h2 className="text-3xl font-bold text-center mb-4">Everything you need</h2>
-        <p className="text-muted text-center mb-12">No bloat, no enterprise pricing, just the essentials done right.</p>
+        <FadeIn inView>
+          <h2 className="text-3xl font-bold text-center mb-4">Everything you need</h2>
+          <p className="text-muted text-center mb-12">
+            No bloat, no enterprise pricing, just the essentials done right.
+          </p>
+        </FadeIn>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Stagger className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             {
               icon: Globe,
@@ -122,32 +139,34 @@ export default function LandingPage() {
             {
               icon: Shield,
               title: 'React Embed',
-              desc: 'Drop a <DowntimeBanner /> into your app. Shows when there\'s an active incident, hides otherwise.',
+              desc: "Drop a <DowntimeBanner /> into your app. Shows when there's an active incident, hides otherwise.",
             },
           ].map(({ icon: Icon, title, desc }) => (
-            <div
+            <StaggerItem
               key={title}
-              className="bg-surface border border-border rounded-xl p-6 hover:border-border-2 transition-colors"
+              whileHover={{ y: -4 }}
+              className="group glass rounded-2xl p-6 transition-shadow duration-300 hover:shadow-glow"
             >
-              <div className="w-10 h-10 rounded-lg bg-primary-muted flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-[#8b5cf6]/20 ring-1 ring-white/10 flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
                 <Icon className="w-5 h-5 text-primary" />
               </div>
               <h3 className="font-semibold mb-2">{title}</h3>
               <p className="text-sm text-muted leading-relaxed">{desc}</p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       {/* Code snippet */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-        <div className="bg-surface-2 border border-border rounded-2xl p-8">
-          <div className="flex items-center gap-2 mb-6">
-            <Code2 className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold">API-first incident management</h3>
-          </div>
-          <pre className="text-sm font-mono text-muted-foreground overflow-x-auto">
-            <code>{`# Create an incident via REST API
+        <FadeIn inView>
+          <div className="glass-strong rounded-2xl p-8">
+            <div className="flex items-center gap-2 mb-6">
+              <Code2 className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold">API-first incident management</h3>
+            </div>
+            <pre className="text-sm font-mono text-muted-foreground overflow-x-auto">
+              <code>{`# Create an incident via REST API
 curl -X POST https://api.downtime.so/api/v1/incidents \\
   -H "x-api-key: your_api_key" \\
   -H "Content-Type: application/json" \\
@@ -162,55 +181,80 @@ curl -X POST https://api.downtime.so/api/v1/incidents \\
 curl -X POST https://api.downtime.so/api/v1/incidents/inc_abc/updates \\
   -H "Authorization: Bearer your_jwt" \\
   -d '{"message": "Root cause identified. Deploying fix.", "status": "IDENTIFIED"}'`}</code>
-          </pre>
-        </div>
+            </pre>
+          </div>
+        </FadeIn>
       </section>
 
       {/* Pricing */}
       <section id="pricing" className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
-        <h2 className="text-3xl font-bold text-center mb-4">Simple pricing</h2>
-        <p className="text-muted text-center mb-12">No per-seat nonsense. One flat price.</p>
+        <FadeIn inView>
+          <h2 className="text-3xl font-bold text-center mb-4">Simple pricing</h2>
+          <p className="text-muted text-center mb-12">No per-seat nonsense. One flat price.</p>
+        </FadeIn>
 
-        <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-          <div className="bg-surface border border-border rounded-2xl p-8">
+        <Stagger className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <StaggerItem className="glass rounded-2xl p-8">
             <h3 className="font-bold text-xl mb-1">Free</h3>
-            <p className="text-3xl font-extrabold mb-4">$0<span className="text-muted text-base font-normal">/mo</span></p>
+            <p className="text-3xl font-extrabold mb-4">
+              $0<span className="text-muted text-base font-normal">/mo</span>
+            </p>
             <ul className="space-y-3 text-sm text-muted mb-8">
-              {['3 services', '100 subscribers', 'Email notifications', 'API access', 'SSE real-time'].map(f => (
-                <li key={f} className="flex items-center gap-2">
-                  <span className="text-status-operational">✓</span> {f}
-                </li>
-              ))}
+              {['3 services', '100 subscribers', 'Email notifications', 'API access', 'SSE real-time'].map(
+                (f) => (
+                  <li key={f} className="flex items-center gap-2">
+                    <span className="text-status-operational">✓</span> {f}
+                  </li>
+                )
+              )}
             </ul>
-            <Link href="/register" className="block text-center border border-border hover:border-primary text-sm py-2.5 rounded-lg transition-colors">
+            <Link
+              href="/register"
+              className="block text-center border border-white/10 hover:border-primary hover:bg-white/5 text-sm py-2.5 rounded-xl transition-colors"
+            >
               Get started
             </Link>
-          </div>
+          </StaggerItem>
 
-          <div className="bg-surface border border-primary/40 rounded-2xl p-8 relative">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-3 py-1 rounded-full font-semibold">Popular</div>
+          <StaggerItem className="glass-strong rounded-2xl p-8 relative ring-1 ring-primary/30 shadow-glow">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-[#8b5cf6] text-white text-xs px-3 py-1 rounded-full font-semibold shadow-glow">
+              Popular
+            </div>
             <h3 className="font-bold text-xl mb-1">Pro</h3>
-            <p className="text-3xl font-extrabold mb-4">$9<span className="text-muted text-base font-normal">/mo</span></p>
+            <p className="text-3xl font-extrabold mb-4">
+              $9<span className="text-muted text-base font-normal">/mo</span>
+            </p>
             <ul className="space-y-3 text-sm text-muted mb-8">
-              {['Unlimited services', 'Unlimited subscribers', 'Email + SMS', 'Webhook ingestion', 'Custom domain', 'React embed'].map(f => (
-                <li key={f} className="flex items-center gap-2">
-                  <span className="text-status-operational">✓</span> {f}
-                </li>
-              ))}
+              {['Unlimited services', 'Unlimited subscribers', 'Email + SMS', 'Webhook ingestion', 'Custom domain', 'React embed'].map(
+                (f) => (
+                  <li key={f} className="flex items-center gap-2">
+                    <span className="text-status-operational">✓</span> {f}
+                  </li>
+                )
+              )}
             </ul>
-            <Link href="/register" className="block text-center bg-primary hover:bg-primary-hover text-white text-sm py-2.5 rounded-lg transition-colors font-medium">
+            <Link
+              href="/register"
+              className="block text-center bg-gradient-to-r from-primary to-[#8b5cf6] hover:shadow-glow text-white text-sm py-2.5 rounded-xl transition-shadow font-medium"
+            >
               Start free trial
             </Link>
-          </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 py-8 text-center text-sm text-muted">
+      <footer className="border-t border-white/10 py-8 text-center text-sm text-muted">
         <div className="flex items-center justify-center gap-6 mb-3">
-          <Link href="/docs" className="hover:text-foreground transition-colors">Documentation</Link>
-          <Link href="/status/demo" className="hover:text-foreground transition-colors">Demo</Link>
-          <Link href="/register" className="hover:text-foreground transition-colors">Get Started</Link>
+          <Link href="/docs" className="hover:text-foreground transition-colors">
+            Documentation
+          </Link>
+          <Link href="/status/demo" className="hover:text-foreground transition-colors">
+            Demo
+          </Link>
+          <Link href="/register" className="hover:text-foreground transition-colors">
+            Get Started
+          </Link>
         </div>
         <p>© 2025 Downtime.so — Built for developers, by developers.</p>
       </footer>

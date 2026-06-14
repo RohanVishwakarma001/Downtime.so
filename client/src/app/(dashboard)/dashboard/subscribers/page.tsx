@@ -61,7 +61,7 @@ export default function SubscribersPage() {
         <button
           onClick={exportCSV}
           disabled={subscribers.length === 0}
-          className="flex items-center gap-2 border border-border hover:border-border-2 disabled:opacity-40 px-4 py-2 rounded-lg text-sm transition-colors"
+          className="flex items-center gap-2 border border-white/10 hover:border-white/20 hover:bg-white/5 disabled:opacity-40 px-4 py-2 rounded-xl text-sm transition-colors"
         >
           <Download className="w-4 h-4" />
           Export CSV
@@ -70,21 +70,21 @@ export default function SubscribersPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-surface border border-border rounded-xl p-4">
+        <div className="glass rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <Users className="w-4 h-4 text-muted" />
             <span className="text-xs text-muted">Total</span>
           </div>
           <p className="text-2xl font-bold">{total}</p>
         </div>
-        <div className="bg-surface border border-border rounded-xl p-4">
+        <div className="glass rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-xs text-muted">Email</span>
           </div>
           <p className="text-2xl font-bold">{emailCount}</p>
         </div>
-        <div className="bg-surface border border-border rounded-xl p-4">
+        <div className="glass rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <Phone className="w-4 h-4 text-green-400" />
             <span className="text-xs text-muted">SMS</span>
@@ -99,7 +99,7 @@ export default function SubscribersPage() {
         <select
           value={selectedServiceId}
           onChange={(e) => setSelectedServiceId(e.target.value)}
-          className="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-primary transition-colors"
+          className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 transition-all"
         >
           <option value="">All services</option>
           {services.map((s: any) => (
@@ -109,8 +109,8 @@ export default function SubscribersPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-surface border border-border rounded-xl overflow-hidden">
-        <div className="grid grid-cols-4 gap-4 px-5 py-3 border-b border-border bg-surface-2 text-xs font-medium text-muted">
+      <div className="glass rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-4 gap-4 px-5 py-3 border-b border-white/10 bg-white/5 text-xs font-medium text-muted">
           <span>Contact</span>
           <span>Type</span>
           <span>Service</span>
@@ -118,10 +118,10 @@ export default function SubscribersPage() {
         </div>
 
         {isLoading ? (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-white/5">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="px-5 py-4 animate-pulse">
-                <div className="h-4 bg-surface-2 rounded w-48" />
+                <div className="h-4 bg-white/5 rounded w-48" />
               </div>
             ))}
           </div>
@@ -134,9 +134,9 @@ export default function SubscribersPage() {
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-white/5">
             {subscribers.map((sub: any) => (
-              <div key={sub.id} className="grid grid-cols-4 gap-4 px-5 py-3.5 text-sm hover:bg-surface-2 transition-colors">
+              <div key={sub.id} className="grid grid-cols-4 gap-4 px-5 py-3.5 text-sm hover:bg-white/5 transition-colors">
                 <span className="truncate font-mono text-xs">{sub.email || sub.phone}</span>
                 <div className="flex items-center gap-1.5">
                   {sub.email ? (
