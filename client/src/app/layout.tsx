@@ -9,6 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://downtime.so'),
   title: {
     default: 'Downtime.so — Incident Communication Infrastructure',
     template: '%s | Downtime.so',
