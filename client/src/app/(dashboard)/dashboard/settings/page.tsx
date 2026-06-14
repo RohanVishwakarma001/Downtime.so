@@ -1,12 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Copy, Check, Key, Globe, Webhook, Code2, ExternalLink } from 'lucide-react';
-import { api } from '@/lib/api';
-import { getUser } from '@/lib/auth';
-import { copyToClipboard } from '@/lib/utils';
-import toast from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Copy,
+  Check,
+  Key,
+  Globe,
+  Webhook,
+  Code2,
+  ExternalLink,
+} from "lucide-react";
+import { api } from "@/lib/api";
+import { getUser } from "@/lib/auth";
+import { copyToClipboard } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 function CopyButton({ text, label }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);
@@ -14,7 +22,7 @@ function CopyButton({ text, label }: { text: string; label?: string }) {
   async function handleCopy() {
     await copyToClipboard(text);
     setCopied(true);
-    toast.success('Copied to clipboard');
+    toast.success("Copied to clipboard");
     setTimeout(() => setCopied(false), 2000);
   }
 
@@ -26,19 +34,25 @@ function CopyButton({ text, label }: { text: string; label?: string }) {
       {copied ? (
         <>
           <Check className="w-3.5 h-3.5 text-green-400" />
-          {label || 'Copied!'}
+          {label || "Copied!"}
         </>
       ) : (
         <>
           <Copy className="w-3.5 h-3.5" />
-          {label || 'Copy'}
+          {label || "Copy"}
         </>
       )}
     </button>
   );
 }
 
-function CodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
+function CodeBlock({
+  code,
+  language = "bash",
+}: {
+  code: string;
+  language?: string;
+}) {
   return (
     <div className="relative bg-surface-2 rounded-lg border border-border overflow-hidden">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border">
@@ -54,18 +68,18 @@ function CodeBlock({ code, language = 'bash' }: { code: string; language?: strin
 
 export default function SettingsPage() {
   const user = getUser();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
   // Resolve the public origin at runtime so the status-page URL always matches
   // the domain the dashboard is actually served from (never localhost in prod).
-  const [APP_URL, setAppUrl] = useState(process.env.NEXT_PUBLIC_APP_URL || '');
+  const [APP_URL, setAppUrl] = useState(process.env.NEXT_PUBLIC_APP_URL || "");
   useEffect(() => {
     setAppUrl(process.env.NEXT_PUBLIC_APP_URL || window.location.origin);
   }, []);
 
   const { data: orgData } = useQuery({
-    queryKey: ['org-settings'],
-    queryFn: () => api.get('/api/v1/services/org').then((r) => r.data),
+    queryKey: ["org-settings"],
+    queryFn: () => api.get("/api/v1/services/org").then((r) => r.data),
   });
 
   if (!user) return null;
@@ -95,7 +109,9 @@ function App() {
     <div className="p-6 max-w-3xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Settings</h1>
-        <p className="text-muted text-sm mt-1">Configure your status page and integrations</p>
+        <p className="text-muted text-sm mt-1">
+          Configure your status page and integrations
+        </p>
       </div>
 
       <div className="space-y-6">
@@ -107,7 +123,9 @@ function App() {
           </div>
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-muted block mb-1.5">Organization Name</label>
+              <label className="text-xs text-muted block mb-1.5">
+                Organization Name
+              </label>
               <div className="flex items-center gap-3">
                 <input
                   value={user.orgName}
@@ -118,7 +136,9 @@ function App() {
             </div>
 
             <div>
-              <label className="text-xs text-muted block mb-1.5">Slug / URL identifier</label>
+              <label className="text-xs text-muted block mb-1.5">
+                Slug / URL identifier
+              </label>
               <div className="flex items-center gap-3">
                 <code className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm font-mono">
                   {user.orgSlug}
@@ -128,7 +148,9 @@ function App() {
             </div>
 
             <div>
-              <label className="text-xs text-muted block mb-1.5">Public Status Page</label>
+              <label className="text-xs text-muted block mb-1.5">
+                Public Status Page
+              </label>
               <div className="flex items-center gap-3">
                 <a
                   href={statusPageUrl}
@@ -153,14 +175,21 @@ function App() {
           </div>
 
           <div className="mb-5">
-            <label className="text-xs text-muted block mb-1.5">Your API Key</label>
+            <label className="text-xs text-muted block mb-1.5">
+              Your API Key
+            </label>
             <div className="flex items-center gap-3">
               <code className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm font-mono text-muted-foreground truncate">
-                {orgData?.org?.apiKey ?? 'Loading...'}
+                {orgData?.org?.apiKey ?? "Loading..."}
               </code>
-              {orgData?.org?.apiKey && <CopyButton text={orgData.org.apiKey} label="Copy key" />}
+              {orgData?.org?.apiKey && (
+                <CopyButton text={orgData.org.apiKey} label="Copy key" />
+              )}
             </div>
-            <p className="text-xs text-muted mt-1.5">Keep this secret — it provides full API access to your organization.</p>
+            <p className="text-xs text-muted mt-1.5">
+              Keep this secret — it provides full API access to your
+              organization.
+            </p>
           </div>
 
           <CodeBlock
@@ -180,30 +209,43 @@ curl -X POST ${API_URL}/api/v1/incidents/api \\
             <h2 className="font-semibold">Webhook Integrations</h2>
           </div>
           <p className="text-sm text-muted mb-5">
-            Add ?serviceId=YOUR_SERVICE_ID to each webhook URL, or include it in the request body.
+            Add ?serviceId=YOUR_SERVICE_ID to each webhook URL, or include it in
+            the request body.
           </p>
 
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-muted block mb-2">UptimeRobot Webhook URL</label>
+              <label className="text-xs text-muted block mb-2">
+                UptimeRobot Webhook URL
+              </label>
               <div className="flex items-center gap-3">
                 <code className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-xs font-mono text-muted-foreground overflow-x-auto">
                   {uptimeRobotWebhook}?serviceId=YOUR_SERVICE_ID
                 </code>
-                <CopyButton text={`${uptimeRobotWebhook}?serviceId=YOUR_SERVICE_ID`} />
+                <CopyButton
+                  text={`${uptimeRobotWebhook}?serviceId=YOUR_SERVICE_ID`}
+                />
               </div>
-              <p className="text-xs text-muted mt-1.5">In UptimeRobot: Monitors → Edit → Alert contacts → Webhook</p>
+              <p className="text-xs text-muted mt-1.5">
+                In UptimeRobot: Monitors → Edit → Alert contacts → Webhook
+              </p>
             </div>
 
             <div>
-              <label className="text-xs text-muted block mb-2">Datadog Webhook URL</label>
+              <label className="text-xs text-muted block mb-2">
+                Datadog Webhook URL
+              </label>
               <div className="flex items-center gap-3">
                 <code className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-xs font-mono text-muted-foreground overflow-x-auto">
                   {datadogWebhook}?serviceId=YOUR_SERVICE_ID
                 </code>
-                <CopyButton text={`${datadogWebhook}?serviceId=YOUR_SERVICE_ID`} />
+                <CopyButton
+                  text={`${datadogWebhook}?serviceId=YOUR_SERVICE_ID`}
+                />
               </div>
-              <p className="text-xs text-muted mt-1.5">In Datadog: Integrations → Webhooks → New Webhook</p>
+              <p className="text-xs text-muted mt-1.5">
+                In Datadog: Integrations → Webhooks → New Webhook
+              </p>
             </div>
           </div>
         </section>
@@ -215,8 +257,12 @@ curl -X POST ${API_URL}/api/v1/incidents/api \\
             <h2 className="font-semibold">React Embed</h2>
           </div>
           <p className="text-sm text-muted mb-5">
-            Add the <code className="text-primary bg-primary-muted px-1 py-0.5 rounded text-xs">{'<DowntimeBanner />'}</code> component to your app.
-            It renders nothing when all systems are operational.
+            Add the{" "}
+            <code className="text-primary bg-primary-muted px-1 py-0.5 rounded text-xs">
+              {"<DowntimeBanner />"}
+            </code>{" "}
+            component to your app. It renders nothing when all systems are
+            operational.
           </p>
 
           <div className="space-y-3">
