@@ -2,6 +2,8 @@
 
 A self-hosted, open-source status page platform. Create public status pages, manage incidents, send email/SMS notifications, and receive alerts from monitoring tools like UptimeRobot and Datadog.
 
+[![launch with diploi badge](https://diploi.com/launch.svg)](https://diploi.com/launch/RohanVishwakarma001/Downtime.so)
+
 ## Architecture
 
 ```
@@ -75,6 +77,22 @@ npm run dev
 The API runs on `http://localhost:4000` and the client on `http://localhost:3000`.
 
 ## Deployment
+
+### Option 1: Deploy to Diploi
+
+[![launch with diploi button](https://diploi.com/launch-big.svg)](https://diploi.com/launch/RohanVishwakarma001/Downtime.so)
+
+1. Launch the project
+
+   Click the launch button above to create a new Diploi deployment.
+
+2. Add environment variables if needed
+
+   If the project needs additional environment variables, open the **Environment** tab in the sidebar and add them manually.
+
+For more information, please visit [diploi.com](https://diploi.com/).
+
+### Option 2: Manual deployment
 
 See the individual READMEs for deployment instructions:
 
